@@ -9,18 +9,17 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/recieve")
-public class RecieverController {
+public class ReceiverController {
 
     private Publisher publisher;
 
-    public RecieverController(Publisher publisher) {
+    public ReceiverController(Publisher publisher) {
         this.publisher = publisher;
     }
 
     @PostMapping
-    public void recieveDummyInput(@RequestBody List<Information> data){
+    public void receiveDummyInput(@RequestBody List<Information> data){
         publisher.publish(data);
-
     }
 
 }

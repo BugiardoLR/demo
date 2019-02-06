@@ -21,9 +21,8 @@ public class ResponseController {
 
     @GetMapping
     public List<Information> getDBContent(){
-        // Pagination if the db content is too big?
         ArrayList<InformationEntity> result = dataRepository.findAll();
-        List<Information> infList = Util.toModel(result);
+        List<Information> infList = Util.toInformationList(result);
         return infList;
     }
 }
