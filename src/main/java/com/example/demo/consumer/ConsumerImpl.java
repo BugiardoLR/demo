@@ -16,11 +16,15 @@ import java.util.List;
 @Component
 public class ConsumerImpl implements Consumer {
 
-    @Autowired
     DataRepository dataRepository;
 
-    @Autowired
     private Gson gson;
+
+    @Autowired
+    public ConsumerImpl(Gson gson, DataRepository dataRepository) {
+        this.dataRepository = dataRepository;
+        this.gson = gson;
+    }
 
     @Override
     @KafkaListener(topics = "${kafka.topic.name}", groupId = "${kafka.consumer.group.id}")
@@ -34,7 +38,7 @@ public class ConsumerImpl implements Consumer {
     private List<InformationEntity> processJson(String json){
         Type type = new TypeToken<List<Information>>(){}.getType();
         List<Information> inpList = gson.fromJson(json, type);
-        List<InformationEntity> entityList = Util.toEntity(inpList);
+        List<InformationEntity> entityList = Util.toInformationEntityList(inpList);
         return entityList;
     }
 }
