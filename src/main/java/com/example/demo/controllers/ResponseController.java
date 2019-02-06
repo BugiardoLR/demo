@@ -16,8 +16,12 @@ import java.util.List;
 @RequestMapping("/data")
 public class ResponseController {
 
-    @Autowired
     DataRepository dataRepository;
+
+    @Autowired
+    public ResponseController(DataRepository dataRepository) {
+        this.dataRepository = dataRepository;
+    }
 
     @GetMapping
     public List<Information> getDBContent(){
