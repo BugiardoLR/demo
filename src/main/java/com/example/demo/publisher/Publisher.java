@@ -1,10 +1,6 @@
 package com.example.demo.publisher;
 
-import com.example.demo.model.Information;
+public interface Publisher<T> {
 
-import java.util.List;
-
-public interface Publisher {
-
-    void publish(List<Information> data);
+    void publish(T data);
 }

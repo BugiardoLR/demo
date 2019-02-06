@@ -3,7 +3,6 @@ package com.example.demo.publisher;
 
 import com.example.demo.model.Information;
 import com.google.gson.Gson;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
@@ -12,10 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class PublisherImpl implements Publisher {
+public class PublisherImpl implements Publisher<List<Information>> {
 
-    @Autowired
     private KafkaTemplate<String, String> kafkaTemplate;
+
+    private Gson gson;
 
     @Value("${kafka.topic.name}")
     private String topicName;
@@ -23,9 +23,10 @@ public class PublisherImpl implements Publisher {
     @Value("${list.split.step}")
     private int splitStep;
 
-    @Autowired
-    private Gson gson;
-
+    public PublisherImpl(KafkaTemplate<String, String> kafkaTemplate, Gson gson) {
+        this.kafkaTemplate= kafkaTemplate;
+        this.gson = gson;
+    }
 
     @Override
     public void publish(List<Information> data) {
@@ -33,14 +34,12 @@ public class PublisherImpl implements Publisher {
 
         if (data.size() > splitStep){
             for (int i = 0; i < data.size() - splitStep ; i+= splitStep){
-                String msg = gson.toJson(data.subList(i , i + splitStep));
-                messages.add(msg);
+                String sublistJson = gson.toJson(data.subList(i , i + splitStep));
+                messages.add(sublistJson);
             }
         }else{
-
             String msg = gson.toJson(data);
             messages.add(msg);
-
         }
 
         for (String msg : messages){
