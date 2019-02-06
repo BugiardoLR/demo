@@ -2,5 +2,5 @@ package com.example.demo.consumer;
 
 public interface Consumer {
 
-     void consume();
+     void consume(String msg);
 }
