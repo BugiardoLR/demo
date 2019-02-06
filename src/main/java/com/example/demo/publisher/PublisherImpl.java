@@ -31,10 +31,14 @@ public class PublisherImpl implements Publisher<List<Information>> {
     @Override
     public void publish(List<Information> data) {
         ArrayList<String> messages = new ArrayList<>();
-
-        if (data.size() > splitStep){
-            for (int i = 0; i < data.size() - splitStep ; i+= splitStep){
-                String sublistJson = gson.toJson(data.subList(i , i + splitStep));
+        int dataSize = data.size();
+        if (dataSize > splitStep){
+            for (int i = 0; i < data.size(); i+= splitStep){
+                int j = i + splitStep;
+                if (j > dataSize){
+                    j = dataSize;
+                }
+                String sublistJson = gson.toJson(data.subList(i , j));
                 messages.add(sublistJson);
             }
         }else{
