@@ -8,29 +8,44 @@ services:
       - ALLOW_ANONYMOUS_LOGIN=yes
     healthcheck:
       test: ["CMD", "bash", "-c", "echo ruok | nc localhost 2181 | grep imok"]
+      timeout: 20s
+
   kafka:
     image: 'bitnami/kafka:latest'
     ports:
       - '9092:9092'
       - '29092:29092'
     depends_on:
-      - zookeeper
+     - zookeeper
+        
     environment:
       - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
       - ALLOW_PLAINTEXT_LISTENER=yes
       - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       - KAFKA_LISTENERS=PLAINTEXT://:9092,PLAINTEXT_HOST://:29092
-      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092,PLAINTEXT_HOST://localhost:29092
-      
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092,PLAINTEXT_HOST://localhost:29092      
     healthcheck:
-      test: ["CMD", "nc", "127.0.0.1", "9092"]
-      
+      test: ["CMD", "nc", "l27.0.0.1", "9092"]
+      timeout: 10s
+
   mysql:
     image: 'mysql'
+    container_name:
+      mysql
     ports:
        - '3306:3306'
     environment:
        - MYSQL_ROOT_PASSWORD=secret
        - MYSQL_DATABASE=demo
-       
-       
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 10s       
+      
+  demo:
+   image: 'demo'
+   ports:
+    - '8080:8080'     
+   depends_on:
+     mysql:
+        condition: service_healthy
+   
