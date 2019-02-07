@@ -7,7 +7,7 @@ services:
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
     healthcheck:
-      test: [ "CMD", "/kafka/check.sh", "zookeeper" ]
+      test: ["CMD", "bash", "-c", "echo ruok | nc localhost 2181 | grep imok"]
       interval: 10s
       timeout: 5s
       retries: 3
@@ -28,7 +28,7 @@ services:
     depends_on:
       - zookeeper        
     healthcheck:
-      test: ["CMD", "/kafka/check.sh", "kafka" ]
+      test: ["CMD", "nc", "l27.0.0.1", "9092"]
       interval: 30s
       timeout: 5s
       retries: 3
