@@ -28,8 +28,7 @@ public class PublisherImpl implements Publisher<List<Information>> {
         this.gson = gson;
     }
 
-    @Override
-    public void publish(List<Information> data) {
+    private List<String> splitData(List<Information> data){
         ArrayList<String> messages = new ArrayList<>();
         int dataSize = data.size();
         if (dataSize > splitStep){
@@ -45,10 +44,19 @@ public class PublisherImpl implements Publisher<List<Information>> {
             String msg = gson.toJson(data);
             messages.add(msg);
         }
+        return messages;
 
-        for (String msg : messages){
+    }
+
+    @Override
+    public void publish(List<Information> data) {
+        List<String> splitDataList = splitData(data);
+
+        for (String msg : splitDataList){
             kafkaTemplate.send(topicName,msg);
         }
 
     }
+
+
 }
