@@ -18,19 +18,20 @@ It consists of 2 REST endpoints.
 * The Response endpoint, located at http://localhost:8080/v1/data	
   * Returns all the data saved in the database 
 	
-When running the application from an IDE some changes to the application properties has to be made in order for the application to         successfully connect to a local database and kafka.
-In the folder _local_, there is an docker-compose.yml file, that contains kafka and a database, you can run it and change the following properties in demo/src/main/resources/application.properties 
+
 
 # FOR LOCAL USE
 
+When running the application from an IDE some changes to the application properties has to be made in order for the application to         successfully connect to a local database and kafka.
+In the folder _local_, there is an docker-compose.yml file, that contains kafka and a database, you can run it and change the following properties in demo/src/main/resources/application.properties 
 > spring.datasource.url=jdbc:mysql://localhost:3306/demo
 
 > kafka.bootstrapAddress = http://localhost:29092
 
 
-When using the general docker-compose, which is located in the root of the project the following values in the application.properties file has to be changed, before building an image of the demo, either by running the makefile or by doing a manual build of the img.
-
 # FOR DOCKER-COMPOSE USE
+
+When using the general docker-compose, which is located in the root of the project the following values in the application.properties file has to be changed, before building an image of the demo, either by running the makefile or by doing a manual build of the img.
 
 > spring.datasource.url=jdbc:mysql://db:3306/demo
 
