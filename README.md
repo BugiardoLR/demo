@@ -18,7 +18,8 @@ It consists of 2 REST endpoints.
 * The Response endpoint, located at http://localhost:8080/v1/data	
   * Returns all the data saved in the database 
 	
-When running the application from an IDE some changes to the application properties has to be made in order for the application to         successfully connect to a local database and kafka. In the folder local, there is an docker-compose.yml file, that contains only kafka and a database, you can run it and change the following properties in demo/src/main/resources/application.properties 
+When running the application from an IDE some changes to the application properties has to be made in order for the application to         successfully connect to a local database and kafka.
+In the folder _local_, there is an docker-compose.yml file, that contains kafka and a database, you can run it and change the following properties in demo/src/main/resources/application.properties 
 
 # FOR LOCAL USE
 
