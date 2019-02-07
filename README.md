@@ -12,7 +12,7 @@ It consists of 2 REST endpoints.
 	 
 	 *  On giving invalid input, the user will be greeted by an error page with the corresponding http error code.
 	 
-	 *  The logic for publishing the data to Kafka consists of splitting the data into smaller JSON array and then publishing them to a
+	 *  The logic for publishing the data to Kafka consists of splitting the data into smaller JSON arrays and then publishing them to a
 	   specific topic. The splitting step can be adjusted in the properties file. If the data is smaller than the splitting step the JSON        array will be published as is, without any modifications.
 		 
 * The Response endpoint, located at http://localhost:8080/v1/data	
@@ -26,6 +26,9 @@ In the folder _local_, there is an docker-compose.yml file, that contains kafka 
 > spring.datasource.url=jdbc:mysql://localhost:3306/demo
 
 > kafka.bootstrapAddress = http://localhost:29092
+
+
+When using the general docker-compose, which is located in the root of the project the following values in the application.properties file has to be changed, before building an image of the demo, either by running the makefile or by doing a manual build of the img.
 
 # FOR DOCKER-COMPOSE USE
 
