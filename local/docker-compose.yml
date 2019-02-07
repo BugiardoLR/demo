@@ -1,0 +1,51 @@
+version: '2.1'
+services:
+  zookeeper:
+    image: bitnami/zookeeper:latest
+    ports:
+      - "2181:2181"
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+    healthcheck:
+      test: [ "CMD", "/kafka/check.sh", "zookeeper" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      
+  kafka:
+    image: bitnami/kafka:latest
+    container_name:
+      kafka
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    environment:
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      - KAFKA_LISTENERS=PLAINTEXT://:9092,PLAINTEXT_HOST://:29092
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092,PLAINTEXT_HOST://localhost:29092   
+    depends_on:
+      - zookeeper        
+    healthcheck:
+      test: ["CMD", "/kafka/check.sh", "kafka" ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      
+  db:
+    image: mysql
+    container_name:
+      db
+    ports:
+       - "3306:3306"
+    environment:
+       - MYSQL_ROOT_PASSWORD=secret
+       - MYSQL_DATABASE=demo
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 3      
+
+     
